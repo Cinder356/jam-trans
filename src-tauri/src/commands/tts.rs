@@ -1,6 +1,6 @@
 use crate::logic::play_audio;
 use crate::state::AppState;
-use msedge_tts::tts::client::connect_async;
+use msedge_tts::tts::client::tokio_runtime::connect_async;
 use msedge_tts::tts::SpeechConfig;
 use specta;
 use std::sync::Arc;

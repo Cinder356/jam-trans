@@ -41,7 +41,7 @@ pub fn run() {
             // Load voices in background — не блокируем запуск
             let state_arc = Arc::clone(&state);
             tauri::async_runtime::spawn(async move {
-                match msedge_tts::voice::get_voices_list_async().await {
+                match msedge_tts::voice::tokio_runtime::get_voices_list_async().await {
                     Ok(voices) => {
                         *state_arc.voices.write().await = voices;
                     }
