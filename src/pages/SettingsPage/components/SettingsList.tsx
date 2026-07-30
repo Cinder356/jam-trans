@@ -12,7 +12,7 @@ export default function () {
   useEffect(() => restoreSettings(), []);
 
   return (
-    <div className="flex flex-col gap-4 max-w-xl w-[75%] mt-2 mx-auto">
+    <div className="flex flex-col gap-4 max-w-xl w-[70%] mt-2 mx-auto">
 
       <GeneralGroup settings={settings} changeSettingsProperty={changeSettingsProperty} />
       <Separator className="my-2" />

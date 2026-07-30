@@ -1,3 +1,4 @@
+import SaveButton from "./SaveButton.tsx";
 import SettingsBarActions from "./SettingsBarActions";
 import SettingsList from './SettingsList.tsx';
 
@@ -7,6 +8,7 @@ export default function () {
     <>
       <SettingsBarActions />
       <SettingsList />
+      <SaveButton />
     </>
   )
 }
