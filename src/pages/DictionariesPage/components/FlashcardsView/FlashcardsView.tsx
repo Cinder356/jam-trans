@@ -69,7 +69,7 @@ const FlashcardsView = () => {
 
 
 
-  if (!pairs)
+  if (!pairs || !pairs.length)
     return <div />;
 
   return (

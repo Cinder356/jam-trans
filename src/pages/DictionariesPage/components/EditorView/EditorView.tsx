@@ -82,7 +82,7 @@ export default () => {
   }
 
   return (
-    <div className="p-4 space-y-6 max-w-2xl mx-[5%]">
+    <div className="p-4 space-y-6 max-w-2xl mx-[10%]">
       <div className="space-y-4">
         <div className="space-y-3">
           <div className="space-y-1">
