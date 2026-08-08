@@ -12,6 +12,9 @@ use tokio::sync::Mutex;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // Both `ring` (reqwest 0.12) and `aws-lc-rs` (msedge-tts -> reqwest 0.13)
+    // are compiled into rustls, so pick a provider explicitly.
+    let _ = rustls::crypto::ring::default_provider().install_default();
     std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
     let builder = Builder::<tauri::Wry>::new()
         .commands(collect_commands![

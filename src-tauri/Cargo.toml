@@ -37,5 +37,6 @@ reqwest = { version = "0.12", features = [
   "json",
   "socks",
 ], default-features = false }
+rustls = { version = "0.23", features = ["ring"] }
 rodio = { version = "0.21", features = ["symphonia-all"] }
 msedge-tts = { version = "0.4", features = ["tokio-runtime"], default-features = false }
