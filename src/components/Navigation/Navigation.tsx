@@ -4,12 +4,13 @@ import { PageContext } from '@/app/contexts/PageContext';
 import { cn } from '@/lib/utils';
 
 
-export default function ({ className }: { className?: string }) {
+export default function ({ className, ...props }: { className?: string }) {
   const { currentPage, changePage } = useContext(PageContext);
   return (
     <nav className={cn(
       "z-10 flex flex-row w-fit gap-2 px-2 py-0.5 border rounded-md transition-colors duration-200",
       "bg-background shadow-xs hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50", className)}
+      {...props}
     >
       {(Object.entries(pages) as [PageKey, PageValue][]).map(([pageKey, value]) => {
         const isActive = currentPage === pageKey;

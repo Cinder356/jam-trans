@@ -4,12 +4,8 @@ export default function () {
 
   return (
     <AppBarActions>
-      <div className="grid items-center grid-cols-[1fr_auto_1fr]">
-        <div />
+      <div className="w-fit mx-auto text-center">
         <h1 className="text-2xl font-bold">Settings</h1>
-        <div />
-        {/* <div className="flex justify-end"> */}
-        {/* </div> */}
       </div>
     </AppBarActions>
   )
