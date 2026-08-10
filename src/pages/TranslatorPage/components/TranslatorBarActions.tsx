@@ -22,7 +22,7 @@ export default function () {
 
   return (
     <AppBarActions>
-      <div className="flex gap-2 mx-auto w-fit h-full items-center justify-center select-none">
+      <div data-tauri-drag-region="false" className="flex gap-2 mx-auto w-fit h-full items-center justify-center select-none">
 
         <Select value={langPair.source} onValueChange={(newVal: LangCode | 'auto') => updateLangPair({ source: newVal })}>
           <SelectTrigger size="sm" className="w-32 p-2 capitalize">
