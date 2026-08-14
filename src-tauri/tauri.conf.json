@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Lucid Spell",
+  "productName": "lucid-spell",
   "version": "0.1.0",
   "identifier": "io.github.l1ngus.lucid-spell",
   "build": {
