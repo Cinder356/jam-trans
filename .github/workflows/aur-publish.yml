@@ -1,0 +1,68 @@
+name: Publish to AUR
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-aur:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release assets and calculate hashes
+        id: hashes
+        run: |
+          VERSION=${{ github.event.release.tag_name }}
+          VERSION=${VERSION#v}
+          
+          # Скачиваем исходники для lucid-spell
+          curl -sL -o source.tar.gz "https://github.com/${{ github.repository }}/archive/refs/tags/${{ github.event.release.tag_name }}.tar.gz"
+          SRC_HASH=$(sha256sum source.tar.gz | awk '{print $1}')
+          
+          # Скачиваем deb пакет для lucid-spell-bin
+          curl -sL -o app.deb "https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/lucid-spell_${VERSION}_amd64.deb"
+          BIN_HASH=$(sha256sum app.deb | awk '{print $1}')
+          
+          echo "SRC_HASH=$SRC_HASH" >> $GITHUB_ENV
+          echo "BIN_HASH=$BIN_HASH" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Fetch current PKGBUILDs from AUR
+        run: |
+          # Клонируем ваши текущие AUR репозитории по публичной ссылке (HTTPS)
+          git clone https://aur.archlinux.org/lucid-spell.git
+          git clone https://aur.archlinux.org/lucid-spell-bin.git
+          
+          # Удаляем скрытые папки .git, чтобы экшен публикации создал свою историю коммитов корректно
+          rm -rf lucid-spell/.git lucid-spell-bin/.git
+
+      - name: Update versions and hashes in PKGBUILDs
+        run: |
+          # Обновляем PKGBUILD для lucid-spell
+          sed -i "s/^pkgver=.*/pkgver=$VERSION/" lucid-spell/PKGBUILD
+          sed -i "s/^pkgrel=.*/pkgrel=1/" lucid-spell/PKGBUILD
+          sed -i "s/^sha256sums=.*/sha256sums=('$SRC_HASH')/" lucid-spell/PKGBUILD
+          
+          # Обновляем PKGBUILD для lucid-spell-bin
+          sed -i "s/^pkgver=.*/pkgver=$VERSION/" lucid-spell-bin/PKGBUILD
+          sed -i "s/^pkgrel=.*/pkgrel=1/" lucid-spell-bin/PKGBUILD
+          sed -i "s/^sha256sums=.*/sha256sums=('$BIN_HASH')/" lucid-spell-bin/PKGBUILD
+
+      - name: Publish Source Package (lucid-spell)
+        uses: KSXGitHub/github-actions-deploy-aur@v3.0.1
+        with:
+          pkgname: lucid-spell
+          pkgbuild: ./lucid-spell/PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "Update to version ${{ github.event.release.tag_name }}"
+
+      - name: Publish Bin Package (lucid-spell-bin)
+        uses: KSXGitHub/github-actions-deploy-aur@v3.0.1
+        with:
+          pkgname: lucid-spell-bin
+          pkgbuild: ./lucid-spell-bin/PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "Update to version ${{ github.event.release.tag_name }}"
