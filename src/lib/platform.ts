@@ -1,0 +1,1 @@
+export const isMacOS = () => navigator.userAgent.includes("Mac");

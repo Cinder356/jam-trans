@@ -1,9 +1,12 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { XIcon, MaximizeIcon, MinusIcon } from "lucide-react";
+import { isMacOS } from "@/lib/platform";
 
 const appWindow = getCurrentWindow();
 
 const TitleBarActions = ({ ...props }): React.ReactNode => {
+  if (isMacOS()) return null;
+
   return (
     <div
       {...props}

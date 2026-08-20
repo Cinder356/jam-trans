@@ -1,4 +1,11 @@
 {
+  "app": {
+    "windows": [
+      {
+        "decorations": true
+      }
+    ]
+  },
   "bundle": {
     "targets": ["dmg"]
   }
