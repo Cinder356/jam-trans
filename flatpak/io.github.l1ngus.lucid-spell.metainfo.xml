@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.l1ngus.lucid-spell</id>
+  <launchable type="desktop-id">io.github.l1ngus.lucid-spell.desktop</launchable>
+  <name>Lucid Spell</name>
+  <summary>LLM-powered desktop translator</summary>
+  <developer id="io.github.l1ngus.lucid-spell">
+    <name>l1ngus</name>
+  </developer>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <url type="homepage">https://github.com/l1ngus/lucid-spell</url>
+  <url type="bugtracker">https://github.com/l1ngus/lucid-spell/issues</url>
+  <content_rating type="oars-1.1"/>
+  <keywords>
+    <keyword>translate</keyword>
+    <keyword>translator</keyword>
+    <keyword>llm</keyword>
+    <keyword>ai</keyword>
+    <keyword>переводчик</keyword>
+  </keywords>
+  <description>
+    <p>
+      Lucid Spell is a desktop translator powered by large language models.
+      Bring your own API key and translate text using OpenAI, Google AI,
+      Anthropic, Mistral, OpenRouter, or any custom OpenAI-compatible endpoint.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>LLM-powered translation with automatic source text correction</li>
+      <li>High-quality neural text-to-speech via Microsoft Edge TTS</li>
+      <li>Personal dictionaries with term pairs, bulk import and export</li>
+      <li>Favorites and flashcard study mode</li>
+      <li>Configurable keyboard shortcuts</li>
+      <li>SOCKS5/HTTP/HTTPS proxy support</li>
+    </ul>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/l1ngus/lucid-spell/master/assets/screenshot-translator-dark.png</image>
+      <caption>Translator (dark mode)</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/l1ngus/lucid-spell/master/assets/screenshot-translator-white.png</image>
+      <caption>Translator (light mode)</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/l1ngus/lucid-spell/master/assets/screenshot-dictionaries-dark.png</image>
+      <caption>Dictionaries</caption>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="0.1.0" date="2026-07-24"/>
+  </releases>
+  <update_contact>dga03@mail.ru</update_contact>
+</component>

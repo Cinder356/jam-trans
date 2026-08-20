@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Lucid Spell
+Comment=LLM-powered translator
+Comment[ru]=Переводчик на основе LLM
+Exec=lucid-spell
+Icon=io.github.l1ngus.lucid-spell
+Terminal=false
+Categories=Utility;TextTools;
+Keywords=translate;translator;llm;ai;translation;перевод;переводчик;
+StartupNotify=true

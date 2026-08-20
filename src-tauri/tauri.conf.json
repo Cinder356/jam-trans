@@ -34,6 +34,14 @@
       "icons/icon.ico"
     ],
     "license": "MIT",
-    "licenseFile": "../LICENSE"
+    "licenseFile": "../LICENSE",
+    "linux": {
+      "deb": {
+        "files": {
+          "/usr/share/applications/io.github.l1ngus.lucid-spell.desktop": "../flatpak/io.github.l1ngus.lucid-spell.desktop",
+          "/usr/share/metainfo/io.github.l1ngus.lucid-spell.metainfo.xml": "../flatpak/io.github.l1ngus.lucid-spell.metainfo.xml"
+        }
+      }
+    }
   }
 }
