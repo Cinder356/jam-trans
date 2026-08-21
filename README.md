@@ -30,20 +30,43 @@
 </p>
 
 <p align="center">
-  <a href="#-download"><b>Download</b></a> •
+  <a href="#-installation"><b>Installation</b></a> •
   <a href="#-features"><b>Features</b></a> •
   <a href="#-screenshots"><b>Screenshots</b></a>
 </p>
 
 ---
 
-## 📥 Download
+## 📥 Installation
 
-Prebuilt binaries for your operating system are available on the GitHub Releases page.
+### Arch Linux (AUR)
+
+Lucid Spell is available in the Arch User Repository (AUR). You can install it using `yay`:
+
+```bash
+# Precompiled binary (recommended, fastest installation)
+yay -S lucid-spell-bin
+
+# Or build from source
+yay -S lucid-spell
+```
+
+---
+
+### Direct Download (Latest Release)
+
+Download prebuilt binaries directly for your platform:
+
+| Operating System | Package Format | Download Link |
+| :--- | :--- | :--- |
+| 🪟 **Windows** | `.exe` (Installer) / `.msi` | [Download for Windows](https://github.com/l1ngus/lucid-spell/releases/latest) |
+| 🍎 **macOS** | `.dmg` (Universal / Apple Silicon & Intel) | [Download for macOS](https://github.com/l1ngus/lucid-spell/releases/latest) |
+| 🐧 **Linux (Ubuntu / Debian)** | `.deb` package | [Download `.deb`](https://github.com/l1ngus/lucid-spell/releases/latest) |
+| 🐧 **Linux (Universal)** | `.AppImage` / `.tar.gz` | [Download `.AppImage`](https://github.com/l1ngus/lucid-spell/releases/latest) |
 
 <p align="center">
-  <a href="https://github.com/l1ngus/lucid-spell/releases">
-    <img src="https://img.shields.io/badge/Download_Latest_Release-42b883?style=for-the-badge&logo=github&logoColor=white" alt="Download Latest Release" />
+  <a href="https://github.com/l1ngus/lucid-spell/releases/latest">
+    <img src="https://img.shields.io/badge/Browse_All_Release_Assets-42b883?style=for-the-badge&logo=github&logoColor=white" alt="Browse All Release Assets" />
   </a>
 </p>
 
