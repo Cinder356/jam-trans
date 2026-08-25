@@ -1,6 +1,6 @@
 [package]
 name = "lucid-spell"
-version = "1.0.0"
+version = "1.0.1"
 description = "Lucid Spell - LLM-powered translator"
 authors = ["l1ngus"]
 license = "MIT"
