@@ -65,7 +65,7 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
     <GroupWrapper>
       <GroupHeading>Model profile</GroupHeading>
       <div className="flex items-end gap-2">
-        <SelectProperty label='Model'
+        <SelectProperty label='Profile'
           value={isProfileIdValid
             ? activeProfileId
             : ""}

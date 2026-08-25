@@ -4,13 +4,17 @@ export const AI_SERVICES = {
     label: "Manual OpenAI API",
     url: ""
   },
+  groq: {
+    label: "Groq Cloud",
+    url: "https://api.groq.com/openai/v1"
+  },
   openai: {
     label: "OpenAI",
     url: "https://api.openai.com/v1"
   },
   google: {
     label: "Google AI",
-    url: ""
+    url: "https://generativelanguage.googleapis.com/v1beta/openai"
   },
   anthropic: {
     label: "Anthropic",
