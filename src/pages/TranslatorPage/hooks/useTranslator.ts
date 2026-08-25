@@ -5,6 +5,7 @@ import type { LangCode } from "@/app/types/Langs";
 import { getTranslationPrompt } from "@/app/consts/prompts";
 import { type TranslateResponse, TranslateResponseScheme } from '../types/TranslateResponse'
 import useActiveLlmProfile from './useActiveLlmProfile';
+import { extractAndParseJSON } from '@/app/helpers/parseLlmRespone';
 
 
 export interface TranslateParams {
@@ -18,20 +19,20 @@ export default () => {
 
   const translateViaLlm = async ({ term, sourceLang, targetLang }: TranslateParams): Promise<TranslateResponse> => {
     if (!llmProfile) throw new Error("No LLM profile selected. Go to Settings to add one.");
+
     const prompt = getTranslationPrompt({ text: term, sourceLang, targetLang });
     const response = await commands.askLlm([{
       role: 'user',
       content: prompt
     }], llmProfile.model, .7);
 
-    if (response.status === 'error')
+    if (response.status === 'error') {
       throw new Error(response.error);
+    }
 
-    const cleanStr = response.data
-      .replace(/^(```|""")\w*\n/, "")
-      .replace(/(```|""")$/, "");
+    const parsedData = extractAndParseJSON(response.data);
+    const result = TranslateResponseScheme.parse(parsedData);
 
-    const result = TranslateResponseScheme.parse(JSON.parse(cleanStr));
     return result;
   }
 
