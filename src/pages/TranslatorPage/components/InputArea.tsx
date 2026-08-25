@@ -30,7 +30,8 @@ export default function () {
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const sourceValue = e.target.value;
     updateSourceText(sourceValue);
-    detectAndSwapLangs(sourceValue, langPair);
+    if (settings.isAutoLanguageSwitchEnabled)
+      detectAndSwapLangs(sourceValue, langPair);
   }
 
   const handleApplySuggestion = () => {
