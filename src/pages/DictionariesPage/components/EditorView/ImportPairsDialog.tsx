@@ -93,7 +93,7 @@ const ImportPairsDialog = ({ children, onImportPairs }: ImportPairsDialogProps) 
 
           {/* OUTER SEPARATOR */}
           <div className="grid w-full max-w-xs items-center gap-1.5">
-            <Label htmlFor="outer-separator-select">Inner separator</Label>
+            <Label htmlFor="outer-separator-select">Outer separator</Label>
             <Select defaultValue={DEFAULT_OUTER} onValueChange={val => handleSeparatorChange({ outer: val as OuterSeparator })} >
               <SelectTrigger size="sm" id="outer-separator-select">
                 <SelectValue placeholder="Outer separator" />

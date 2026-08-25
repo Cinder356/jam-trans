@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { addPair, updatePair, removePair } from "@/app/stores/dictionariesStore"
+import { addPair, updatePair, removePair, addMultiplePairs } from "@/app/stores/dictionariesStore"
 import type { DictionaryPair, TermPair } from "@/app/types/Dictionary"
 import Pair from "./Pair"
 import AddPairForm from "./AddPairForm"
@@ -44,9 +44,7 @@ export default ({ dictId, pairs, onChanged }: PairListProps) => {
   };
 
   const handleImportPairs = async (newPairs: TermPair[]) => {
-    console.log(newPairs);
-    const promises = newPairs.map(pair => addPair(dictId, pair));
-    await Promise.all(promises);
+    await addMultiplePairs(dictId, newPairs);
     onChanged();
   }
 

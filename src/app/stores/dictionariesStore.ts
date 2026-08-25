@@ -78,6 +78,25 @@ export async function addPair(
   return newPair;
 }
 
+export async function addMultiplePairs(
+  dictionaryId: string,
+  newPairs: Pick<DictionaryPair, 'source' | 'target' | 'sourceLang' | 'targetLang'>[]
+): Promise<DictionaryPair[] | null> {
+  const dicts = await getAllDictionaries();
+  const dict = dicts.find(d => d.meta.id === dictionaryId);
+  if (!dict) return null;
+  const createdPairs: DictionaryPair[] = [];
+  for (const pair of newPairs) {
+    const newPairWithId: DictionaryPair = { id: generateId(), ...pair };
+    dict.pairs.push(newPairWithId);
+    createdPairs.push(newPairWithId);
+  }
+  dict.meta.updatedAt = Date.now();
+  await store.set(STORE_KEY, dicts);
+  await store.save();
+  return createdPairs;
+}
+
 export async function updatePair(
   dictionaryId: string,
   pairId: string,
