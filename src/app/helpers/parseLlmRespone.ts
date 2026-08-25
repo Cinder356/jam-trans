@@ -9,7 +9,7 @@ export function extractAndParseJSON(rawResponse: string) {
     const lastBrace = withoutThink.lastIndexOf('}');
 
     if (firstBrace === -1 || lastBrace === -1) {
-      throw new Error("JSON не найден в ответе");
+      throw new Error("JSON not found in the response");
     }
 
     // 3. Вырезаем только JSON часть
@@ -18,7 +18,7 @@ export function extractAndParseJSON(rawResponse: string) {
     // 4. Парсим
     return JSON.parse(jsonString);
   } catch (error) {
-    console.error("Ошибка парсинга ответа LLM. Оригинальный ответ:", rawResponse);
+    console.error("LLM response parsing error. Original response:", rawResponse);
     throw error;
   }
 }

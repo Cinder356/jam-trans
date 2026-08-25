@@ -44,34 +44,56 @@ pub async fn ask_llm(
     state: tauri::State<'_, Arc<AppState>>,
 ) -> Result<String, String> {
     let client_guard = state.openai_client.lock().await;
-    let client = client_guard.as_ref().ok_or("API Key not set")?;
+    let client = client_guard.as_ref().ok_or("API key not set")?;
+
     let api_messages = match parse_chat_messages(messages) {
         Ok(msgs) => msgs,
         Err(e) => return Err(format!("Parsing chat messages error: {}", e)),
     };
+
     let request = CreateChatCompletionRequestArgs::default()
         .model(model)
-        .max_tokens(2048u16)
+        .max_tokens(4096u16)
         .temperature(temperature)
         .messages(api_messages)
         .stream(false)
         .build()
-        .map_err(|e| e.to_string())?;
+        .map_err(|e| format!("Failed to build request: {}", e))?;
 
-    // ВАЖНО: тип ответа — serde_json::Value, чтобы избежать ошибок десериализации
     let resp_json: Value = client
         .chat()
-        .create_byot(request) // <- вместо .create(...)
+        .create_byot(request)
         .await
-        .map_err(|e| format!("API error: {}", e))?;
+        .map_err(|e| format!("API request failed: {}", e))?;
 
-    // Извлекаем текст (проверьте по реальному JSON — путь может отличаться)
-    let content = resp_json
+    // 1. Check if the LLM provider returned an error payload
+    if let Some(api_error) = resp_json.get("error") {
+        return Err(format!("LLM Provider Error: {}", api_error));
+    }
+
+    // 2. Retrieve the first choice object
+    let choice = resp_json
         .get("choices")
-        .and_then(|c| c.get(0))
-        .and_then(|ch| ch.get("message").and_then(|m| m.get("content")))
+        .and_then(|c| c.as_array())
+        .and_then(|arr| arr.get(0))
+        .ok_or("Invalid API response: 'choices' array is missing or empty")?;
+
+    // 3. Handle truncation due to max_tokens limits
+    if let Some(finish_reason) = choice.get("finish_reason").and_then(|v| v.as_str()) {
+        if finish_reason == "length" {
+            return Err(
+                "Token limit exceeded (max_tokens). Response was truncated before completion."
+                    .to_string(),
+            );
+        }
+    }
+
+    // 4. Extract content string safely
+    let content = choice
+        .get("message")
+        .and_then(|m| m.get("content"))
         .and_then(|v| v.as_str())
-        .unwrap_or_default()
+        .ok_or("Invalid API response: 'message.content' is missing or not a string")?
         .to_string();
 
     Ok(content)
