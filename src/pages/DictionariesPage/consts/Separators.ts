@@ -17,7 +17,7 @@ export const INNER_SEPARATORS = {
 export const OUTER_SEPARATORS = {
   newLine: {
     label: "New line",
-    sep: /\r?\n/
+    sep: "\n"
   },
   semicolon: {
     label: "Semicolon (;)",
