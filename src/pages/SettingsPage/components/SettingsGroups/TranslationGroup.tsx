@@ -16,7 +16,7 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
       <SwitchProperty id='auto-language-switching-switch' label='Auto language switching'
         defaultValue={settings.isAutoLanguageSwitchEnabled}
         onChange={(value) => changeSettingsProperty('isAutoLanguageSwitchEnabled', value)}
-        hint="Language swapping after any input" />
+        hint="Automatically switches language to match what you type. Works best with distinct alphabets (e.g., Latin and Cyrillic)." />
       <SwitchProperty id='auto-translate-switch' label='Auto translate'
         defaultValue={settings.isAutoTranslateEnabled}
         onChange={(value) => changeSettingsProperty('isAutoTranslateEnabled', value)}
