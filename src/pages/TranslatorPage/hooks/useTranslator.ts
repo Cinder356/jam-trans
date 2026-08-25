@@ -24,7 +24,7 @@ export default () => {
     const response = await commands.askLlm([{
       role: 'user',
       content: prompt
-    }], llmProfile.model, .7);
+    }], llmProfile.model, llmProfile.temperature);
 
     if (response.status === 'error') {
       throw new Error(response.error);

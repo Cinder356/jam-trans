@@ -5,10 +5,11 @@ export const ModelProfileSchema = z.object({
   id: z.string(),
   name: z.string(),
   aiService: AiServiceSchema,
-  model: z.string(),
   serviceUrl: z.string(),
   apiKey: z.string(),
   isProxyEnabled: z.boolean().default(false),
+  model: z.string(),
+  temperature: z.number().min(0.0).max(2.0).default(0.5)
 });
 
 

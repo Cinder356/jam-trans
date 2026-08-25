@@ -1,35 +1,59 @@
 import { useState } from 'react';
-import { Slider } from "@/components/ui/slider"
+import { Slider } from "@/components/ui/slider";
 import LabelWithHint from '../LabelWithHint';
 
 interface SliderPropertyProps {
   label: string;
-  defaultValue: number;
+  defaultValue?: number;
+  value?: number;
+  min?: number;
   max: number;
   step: number;
   onChange: (value: number) => void;
-  hint: string;
+  hint?: string;
 }
 
-export default ({ label, defaultValue, max, step, onChange, hint }: SliderPropertyProps) => {
-  const [sliderValue, setSliderValue] = useState(defaultValue);
+export default function SliderProperty({
+  label,
+  defaultValue,
+  value,
+  min = 0,
+  max,
+  step,
+  onChange,
+  hint,
+}: SliderPropertyProps) {
+  // 1. Храним локальный стейт только для неуправляемого режима
+  const [internalValue, setInternalValue] = useState(defaultValue ?? min);
+
+  // 2. Проверяем, передан ли value извне (Controlled mode)
+  const isControlled = value !== undefined;
+
+  // 3. Выбираем актуальное значение: внешнее (если есть) или локальное
+  const currentValue = isControlled ? value : internalValue;
+
+  const handleValueChange = ([newValue]: number[]) => {
+    // Обновляем локальный стейт только если компонент неуправляемый
+    if (!isControlled) {
+      setInternalValue(newValue);
+    }
+    onChange(newValue);
+  };
 
   return (
     <div>
       <div className="flex justify-between">
         <LabelWithHint label={label} hint={hint} />
-        <p>{sliderValue}</p>
+        <p>{currentValue}</p>
       </div>
       <Slider
         className="mt-1.5"
-        defaultValue={[defaultValue]}
+        value={[currentValue]}
+        min={min}
         max={max}
         step={step}
-        onValueChange={([value]) => {
-          setSliderValue(value)
-          onChange(value);
-        }}
+        onValueChange={handleValueChange}
       />
     </div>
-  )
+  );
 }

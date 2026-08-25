@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import type { ModelProfile } from '@/app/types/ModelProfile';
+import { ModelProfileSchema, type ModelProfile } from '@/app/types/ModelProfile';
 import type { SettingsGroupProps } from "../../types/SettingsGroupProps";
 import GroupWrapper from './GroupWrapper';
 import GroupHeading from './GroupHeading';
@@ -8,6 +8,7 @@ import TextProperty from "../Properties/TextProperty";
 import SelectProperty from "../Properties/SelectProperty";
 import SwitchProperty from '../Properties/SwitchProperty';
 import { DEFAULT_AI_SERVICE, AI_SERVICE_KEYS, AI_SERVICES } from '@/app/consts/aiServices';
+import SliderProperty from '../Properties/SliderProperty';
 
 export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
   const [activeProfileId, setActiveProfileId] = useState(settings.activeLlmProfileId);
@@ -28,10 +29,11 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
       id: crypto.randomUUID(),
       name: 'New profile',
       aiService: DEFAULT_AI_SERVICE,
-      model: '',
       serviceUrl: '',
       apiKey: '',
-      isProxyEnabled: false
+      isProxyEnabled: false,
+      model: '',
+      temperature: 0.5
     }
     const updated = [...profiles, newProfile];
     setProfiles(updated);
@@ -93,10 +95,6 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
           }))}
           onChange={val => handleProfileFieldChange('aiService', val)} />}
 
-      {isProfileIdValid &&
-        <TextProperty id='profile-model-input' label='Model'
-          value={currentProfile?.model ?? ""}
-          onChange={val => handleProfileFieldChange('model', val)} />}
       {(isProfileIdValid && currentProfile?.aiService === 'openaimanual') &&
         <TextProperty id='profile-service-url-input' label='AI service URL'
           value={currentProfile?.serviceUrl ?? ""}
@@ -110,6 +108,14 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
         <SwitchProperty id='profile-proxy-switch' label='Use proxy for this profile'
           checked={currentProfile?.isProxyEnabled ?? false}
           onChange={value => handleProfileFieldChange('isProxyEnabled', value)} />}
+      {isProfileIdValid &&
+        <TextProperty id='profile-model-input' label='Model'
+          value={currentProfile?.model ?? ""}
+          onChange={val => handleProfileFieldChange('model', val)} />}
+      {isProfileIdValid &&
+        <SliderProperty label='Temperature' value={currentProfile?.temperature ?? ModelProfileSchema.shape.temperature.parse(undefined)}
+          min={0} max={2} step={0.1} onChange={value => handleProfileFieldChange("temperature", value)}
+          hint='Temperature controls how literal or flexible the AI’s translations are: 0.0 – 0.2 Strict; 0.3 – 0.5 Natural; 0.7+ Creative' />}
     </GroupWrapper>
   )
 }
