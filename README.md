@@ -35,6 +35,19 @@
   <a href="#-screenshots"><b>Screenshots</b></a>
 </p>
 
+<!-- Overview video -->
+https://github.com/user-attachments/assets/578a8fba-1d6f-48d1-818d-2a3220d673f9
+
+---
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="assets/screenshot-translator-dark.png" width="48%" alt="Translator Dark Mode" />
+  <img src="assets/screenshot-translator-white.png" width="48%" alt="Translator Light Mode" />
+  <img src="assets/screenshot-dictionaries-dark.png" width="48%" alt="Dictionaries View" />
+</p>
+
 ---
 
 ## 📥 Installation
@@ -82,16 +95,6 @@ Download prebuilt binaries directly for your platform:
 - 🧠 **Flashcard Study Mode** — Review your term pairs with flip animations, shuffle, and keyboard navigation.
 - ⌨️ **Configurable Shortcuts** — Customizable keyboard shortcuts for common actions (clear input, swap languages, apply correction, navigate flashcards).
 - 🌐 **Proxy Support** — SOCKS5/HTTP/HTTPS proxy with authentication for LLM API requests.
-
----
-
-## 📸 Screenshots
-
-<p align="center">
-  <img src="assets/screenshot-translator-dark.png" width="48%" alt="Translator Dark Mode" />
-  <img src="assets/screenshot-translator-white.png" width="48%" alt="Translator Light Mode" />
-  <img src="assets/screenshot-dictionaries-dark.png" width="48%" alt="Dictionaries View" />
-</p>
 
 ---
 
