@@ -18,6 +18,7 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import useTranslator, { type TranslateParams } from '../useTranslator';
 import { type TranslateResponse } from '../../types/TranslateResponse';
+import useSettings from '@/app/hooks/useSettings';
 
 
 export type UseTranslateQueryOptions = TranslateParams;
@@ -26,12 +27,30 @@ export type UseTranslateQueryResult = {
 } & Pick<UseQueryResult<TranslateResponse>, 'isFetching' | 'isError' | 'error'>
 
 export default ({ term, sourceLang, targetLang }: UseTranslateQueryOptions): UseTranslateQueryResult => {
+  const { settings } = useSettings();
   const { translateViaLlm } = useTranslator();
 
   const isEnabled = !!term && term.trim().length > 0;
 
+  const currentProfile = settings.llmProfiles.find(prof => prof.id === settings.activeLlmProfileId);
+
   const { data, isFetching, isError, error } = useQuery({
-    queryKey: ['transalte-key', term, sourceLang, targetLang],
+    queryKey: [
+      'translate',
+      {
+        term,
+        sourceLang,
+        targetLang,
+        profile: currentProfile
+          ? {
+            id: currentProfile.id,
+            aiService: currentProfile.aiService,
+            model: currentProfile.model,
+            temperature: currentProfile.temperature,
+          }
+          : null,
+      },
+    ],
     queryFn: () => translateViaLlm({
       term,
       sourceLang,
@@ -39,7 +58,9 @@ export default ({ term, sourceLang, targetLang }: UseTranslateQueryOptions): Use
     }),
     enabled: isEnabled,
     retry: false,
-    placeholderData: undefined
+    placeholderData: undefined,
+    staleTime: Infinity,
+    gcTime: 1000 * 60 * 60 * 24
   })
 
   const response = data ?? { translation: '', sourceCorrection: '' };

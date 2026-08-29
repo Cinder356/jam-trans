@@ -25,7 +25,6 @@ import useTextToSpeech from '../hooks/useTextToSpeech';
 import { addFavoriteTranslation, isTranslationFavorite, removeFavoriteTranslationByContent } from '@/app/stores/favoritesStore';
 import ChooseDictDialog from './ChooseDictDialog';
 import { addPair } from '@/app/stores/dictionariesStore';
-import { DictionaryPair } from '@/app/types/Dictionary';
 
 
 export default function () {
