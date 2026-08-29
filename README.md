@@ -98,6 +98,12 @@ Download prebuilt binaries directly for your platform:
 
 ---
 
+## License
+This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later). See the `LICENSE` file for details.
+*Note: Versions prior to v1.0.1 were licensed under the MIT License.*
+
+---
+
 <p align="center">
   <i>Built with ❤️ by <a href="https://github.com/l1ngus">l1ngus</a></i>
 </p>
