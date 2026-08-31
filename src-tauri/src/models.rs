@@ -15,11 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use specta::Type;
 
 #[derive(Deserialize, Type)]
 pub struct ChatMessage {
     pub role: String,
     pub content: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Type)]
+pub struct KeyStatus {
+    pub profile_id: String,
+    pub is_saved: bool,
 }
