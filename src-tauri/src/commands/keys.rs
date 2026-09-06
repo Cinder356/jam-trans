@@ -1,9 +1,10 @@
 use crate::logic::keychain;
-use crate::models::KeyStatus;
+use crate::models::{KeyStatus, KeyStoreError};
 
 #[tauri::command]
 #[specta::specta]
-pub fn save_profile_api_key(profile_id: String, api_key: String) -> Result<(), String> {
+pub fn save_profile_api_key(profile_id: String, api_key: String) -> Result<(), KeyStoreError> {
+    println!("Key save");
     keychain::set_key(&profile_id, &api_key)
 }
 

@@ -29,3 +29,21 @@ pub struct KeyStatus {
     pub profile_id: String,
     pub is_saved: bool,
 }
+
+#[derive(Debug, Serialize, Deserialize, Type)]
+#[serde(tag = "type", content = "message")]
+pub enum KeyStoreError {
+    MissingKeyringDaemon(String),
+    Unknown(String),
+}
+// Превращаем любую ошибку keyring::Error в наш KeyStoreError
+impl From<keyring::Error> for KeyStoreError {
+    fn from(err: keyring::Error) -> Self {
+        match err {
+            keyring::Error::NoDefaultStore => KeyStoreError::MissingKeyringDaemon(
+                "Secure credential storage is unavailable. Please install and start a Secret Service daemon (such as gnome-keyring or kwallet) to safely save your API keys".to_string(),
+            ),
+            e => KeyStoreError::Unknown(e.to_string()),
+        }
+    }
+}

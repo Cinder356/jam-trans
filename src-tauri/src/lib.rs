@@ -41,7 +41,7 @@ pub fn run() {
             commands::tts::get_voices,
             commands::keys::save_profile_api_key,
             commands::keys::check_profile_api_key,
-            commands::keys::remove_profile_api_key,
+            commands::keys::remove_profile_api_key
         ])
         .typ::<models::ChatMessage>();
     #[cfg(debug_assertions)] // <- Only export on non-release builds
@@ -96,6 +96,9 @@ pub fn run() {
             commands::llm::ask_llm,
             commands::tts::speak,
             commands::tts::get_voices,
+            commands::keys::save_profile_api_key,
+            commands::keys::check_profile_api_key,
+            commands::keys::remove_profile_api_key
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

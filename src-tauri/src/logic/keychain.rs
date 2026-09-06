@@ -15,14 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use crate::models::KeyStoreError;
 use keyring::Entry;
 
 const SERVICE_NAME: &str = "io.github.l1ngus.lucid-spell.api_keys";
 
 // Сохранить ключ привязав его к ID профиля
-pub fn set_key(profile_id: &str, api_key: &str) -> Result<(), String> {
-    let entry = Entry::new(SERVICE_NAME, profile_id).map_err(|e| e.to_string())?;
-    entry.set_password(api_key).map_err(|e| e.to_string())?;
+pub fn set_key(profile_id: &str, api_key: &str) -> Result<(), KeyStoreError> {
+    let entry = Entry::new(SERVICE_NAME, profile_id)?;
+    entry.set_password(api_key)?;
     Ok(())
 }
 
