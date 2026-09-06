@@ -36,7 +36,6 @@ const Flashcard = forwardRef<FlashcardRef, FlashcardProps>(
     useImperativeHandle(ref, () => ({
       triggerScale: () => {
         setIsScaling(true);
-        // Возвращаем в исходное состояние через 150мс
         setTimeout(() => {
           setIsScaling(false);
         }, 100);
@@ -46,13 +45,14 @@ const Flashcard = forwardRef<FlashcardRef, FlashcardProps>(
     return (
       <div
         onPointerDown={onFlip}
-        // Динамически подставляем scale-95 или scale-100
-        className={cn("flex justify-center cursor-pointer items-center w-60 h-36 mx-auto my-auto font-bold border select-none rounded-md bg-input/40 transition-transform duration-200",
+        className={cn(
+          "flex justify-center cursor-pointer items-start px-3 py-1 w-60 h-36 mx-auto my-auto font-bold border select-none rounded-md bg-input/40 transition-transform duration-200 overflow-y-auto",
           isScaling ? 'scale-95' : 'scale-100'
         )}
       >
-        {!isFlipped && <span>{sourceText}</span>}
-        {isFlipped && <span>{targetText}</span>}
+        <span className="w-full my-auto wrap-break-word">
+          {isFlipped ? targetText : sourceText}
+        </span>
       </div>
     );
   }
