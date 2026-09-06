@@ -18,6 +18,7 @@
 import { useState, useCallback, useRef, useEffect, createContext, type PropsWithChildren, useMemo } from "react";
 import { setConfig, getAllConfigs } from "@/app/stores/settingsStore";
 import { type AppSettings } from "../types/AppSettings";
+import useApiKeyManager from "../hooks/useApiKeyManager";
 
 // export type GetPropertyFn = <K extends keyof AppSettings>(key: K) => AppSettings[K];
 export type ChangePropertyFn = <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => void;
@@ -29,6 +30,8 @@ interface SettingsContextValue {
   saveSettings: () => void;
   isSaved: boolean;
   restoreSettings: () => void;
+  writeApiKey: (profileId: string, apiKey: string) => void;
+  apiKeysVersion: number;
 }
 
 export const SettingsContext = createContext<SettingsContextValue | null>(null);
@@ -37,6 +40,8 @@ export const SettingsProvider = ({ children }: PropsWithChildren) => {
   const [savedSettings, setSavedSettings] = useState<AppSettings | null>(null);
   const settingsRef = useRef<AppSettings | null>(null);
   const [isSaved, setIsSaved] = useState(true);
+  const { writeApiKey, removeApiKey, saveUpdatedApiKeys, clearStagedApiKeys } = useApiKeyManager();
+  const [apiKeysVersion, setApiKeysVersion] = useState(0);
 
   useEffect(() => {
     getAllConfigs()
@@ -56,29 +61,46 @@ export const SettingsProvider = ({ children }: PropsWithChildren) => {
     settingsRef.current = value;
   }, []);
 
+  const handleWriteApiKey = useCallback((profileId: string, apiKey: string) => {
+    writeApiKey(profileId, apiKey);
+    setIsSaved(false);
+  }, [writeApiKey]);
+
   const saveSettings = useCallback(() => {
+    const prev = savedSettings!;
+    const next = settingsRef.current!;
     (async () => {
-      const entries = Object.entries(settingsRef.current!) as [keyof AppSettings, AppSettings[keyof AppSettings]][];
+      const entries = Object.entries(next) as [keyof AppSettings, AppSettings[keyof AppSettings]][];
       const promises = entries.map(([key, value]) => setConfig(key, value));
       await Promise.all(promises);
+      const savedKeysCount = await saveUpdatedApiKeys();
+      const nextIds = new Set(next.llmProfiles.map(p => p.id));
+      await Promise.all(
+        prev.llmProfiles.filter(p => !nextIds.has(p.id)).map(p => removeApiKey(p.id))
+      );
+      if (savedKeysCount > 0)
+        setApiKeysVersion(v => v + 1);
+      setIsSaved(true);
+      setSavedSettings(next);
     })();
-    setIsSaved(true);
-    setSavedSettings(settingsRef.current);
-  }, []);
+  }, [savedSettings, saveUpdatedApiKeys, removeApiKey]);
 
   const restoreSettings = useCallback(() => {
     settingsRef.current = savedSettings;
+    clearStagedApiKeys();
     setIsSaved(true);
-  }, [savedSettings]);
+  }, [savedSettings, clearStagedApiKeys]);
 
-  const contextValue = useMemo(() => ({
+  const contextValue = useMemo<SettingsContextValue>(() => ({
     settings: savedSettings!,
     changeSettingsProperty,
     setProperties,
     saveSettings,
     isSaved,
-    restoreSettings
-  }), [savedSettings, isSaved, changeSettingsProperty, setProperties, saveSettings, restoreSettings])
+    restoreSettings,
+    writeApiKey: handleWriteApiKey,
+    apiKeysVersion
+  }), [savedSettings, isSaved, changeSettingsProperty, setProperties, saveSettings, restoreSettings, handleWriteApiKey, apiKeysVersion])
 
   if (!savedSettings) return null;
 

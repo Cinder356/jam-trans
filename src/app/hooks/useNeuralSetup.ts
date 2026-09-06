@@ -21,10 +21,9 @@ import useSettings from "./useSettings";
 import { AI_SERVICES } from "../consts/aiServices";
 
 export default () => {
-  const { settings } = useSettings();
+  const { settings, apiKeysVersion } = useSettings();
 
   useEffect(() => {
-    console.log("Client update")
     const profile = settings.llmProfiles.find(p => p.id === settings.activeLlmProfileId);
     if (!profile) {
       console.error("Couldn't find selected llm profile.");
@@ -37,7 +36,7 @@ export default () => {
     const apiUrl = profile.aiService === 'openaimanual'
       ? profile.serviceUrl
       : AI_SERVICES[profile.aiService].url;
-    commands.setLlmConfig(profile.apiKey, apiUrl, proxyUrl)
+    commands.setLlmConfig(profile.id, apiUrl, proxyUrl)
       .then(result => {
         if (result.status === 'error')
           console.error(result.error);
@@ -45,6 +44,6 @@ export default () => {
   }, [
     settings.activeLlmProfileId, settings.llmProfiles, settings.isProxyEnabled,
     settings.proxyHost, settings.proxyPort, settings.proxyProtocol,
-    settings.proxyUser, settings.proxyPass
+    settings.proxyUser, settings.proxyPass, apiKeysVersion
   ])
 }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use crate::logic::parse_chat_messages;
+use crate::logic::{keychain, parse_chat_messages};
 use crate::models::ChatMessage;
 use crate::state::AppState;
 use async_openai::{config::OpenAIConfig, types::chat::CreateChatCompletionRequestArgs, Client};
@@ -28,12 +28,14 @@ use tauri::State;
 #[tauri::command]
 #[specta::specta]
 pub async fn set_llm_config(
-    api_key: String,
+    profile_id: String,
     api_url: String,
     proxy_url: Option<String>,
     state: State<'_, Arc<AppState>>,
 ) -> Result<(), String> {
     let mut client_builder = ClientBuilder::new();
+
+    let api_key = keychain::get_key(&profile_id).map_err(|e| e.to_string())?;
 
     if let Some(proxy) = proxy_url {
         let proxy = Proxy::all(&proxy).map_err(|e| format!("Invalid proxy URL: {}", e))?;

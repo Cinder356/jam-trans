@@ -16,6 +16,7 @@
  */
 
 // src/commands/mod.rs
+pub mod keys;
 pub mod lang;
 pub mod llm;
 pub mod tts;

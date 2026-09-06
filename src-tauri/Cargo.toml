@@ -42,3 +42,8 @@ rodio = { version = "0.21", features = ["symphonia-all"] }
 msedge-tts = { version = "0.4", features = [
   "tokio-runtime",
 ], default-features = false }
+keyring = { version = "4.2.0", features = [
+  "apple-native-keyring-store",
+  "windows-native-keyring-store",
+  "zbus-secret-service-keyring-store",
+] }

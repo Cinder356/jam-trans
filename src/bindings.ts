@@ -5,9 +5,9 @@
 
 
 export const commands = {
-async setLlmConfig(apiKey: string, apiUrl: string, proxyUrl: string | null) : Promise<Result<null, string>> {
+async setLlmConfig(profileId: string, apiUrl: string, proxyUrl: string | null) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("set_llm_config", { apiKey, apiUrl, proxyUrl }) };
+    return { status: "ok", data: await TAURI_INVOKE("set_llm_config", { profileId, apiUrl, proxyUrl }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -36,6 +36,25 @@ async getVoices() : Promise<Result<string[], string>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async saveProfileApiKey(profileId: string, apiKey: string) : Promise<Result<null, KeyStoreError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("save_profile_api_key", { profileId, apiKey }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async checkProfileApiKey(profileId: string) : Promise<KeyStatus> {
+    return await TAURI_INVOKE("check_profile_api_key", { profileId });
+},
+async removeProfileApiKey(profileId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("remove_profile_api_key", { profileId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -50,6 +69,8 @@ async getVoices() : Promise<Result<string[], string>> {
 /** user-defined types **/
 
 export type ChatMessage = { role: string; content: string }
+export type KeyStatus = { profile_id: string; is_saved: boolean }
+export type KeyStoreError = { type: "MissingKeyringDaemon"; message: string } | { type: "Unknown"; message: string }
 
 /** tauri-specta globals **/
 
