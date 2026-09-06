@@ -17,7 +17,7 @@
 
 import { useEffect } from "react";
 import useSettings from "@/app/hooks/useSettings";
-import ModelProfileGroup from "./SettingsGroups/ModelProfileGroup";
+import ModelProfileGroup from "./SettingsGroups/ModelProfileGroup/ModelProfileGroup";
 import GeneralGroup from "./SettingsGroups/GeneralGroup";
 import ProxyGroup from "./SettingsGroups/ProxyGroup";
 import { Separator } from "@/components/ui/separator";

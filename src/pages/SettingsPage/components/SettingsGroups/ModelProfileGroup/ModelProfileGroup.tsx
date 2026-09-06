@@ -18,14 +18,15 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ModelProfileSchema, type ModelProfile } from '@/app/types/ModelProfile';
-import type { SettingsGroupProps } from "../../types/SettingsGroupProps";
-import GroupWrapper from './GroupWrapper';
-import GroupHeading from './GroupHeading';
-import TextProperty from "../Properties/TextProperty";
-import SelectProperty from "../Properties/SelectProperty";
-import SwitchProperty from '../Properties/SwitchProperty';
+import type { SettingsGroupProps } from "../../../types/SettingsGroupProps";
+import GroupWrapper from '../GroupWrapper';
+import GroupHeading from '../GroupHeading';
+import TextProperty from "../../Properties/TextProperty";
+import SelectProperty from "../../Properties/SelectProperty";
+import SwitchProperty from '../../Properties/SwitchProperty';
 import { DEFAULT_AI_SERVICE, AI_SERVICE_KEYS, AI_SERVICES } from '@/app/consts/aiServices';
-import SliderProperty from '../Properties/SliderProperty';
+import SliderProperty from '../../Properties/SliderProperty';
+import ApiKeyInput from './ApiKeyInput';
 
 export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
   const [activeProfileId, setActiveProfileId] = useState(settings.activeLlmProfileId);
@@ -47,7 +48,6 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
       name: 'New profile',
       aiService: DEFAULT_AI_SERVICE,
       serviceUrl: '',
-      apiKey: '',
       isProxyEnabled: false,
       model: '',
       temperature: 0.5
@@ -116,11 +116,13 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
         <TextProperty id='profile-service-url-input' label='AI service URL'
           value={currentProfile?.serviceUrl ?? ""}
           onChange={val => handleProfileFieldChange('serviceUrl', val)} />}
+      {/* {isProfileIdValid && */}
+      {/*   <TextProperty id='profile-service-api-key-input' label='API key' */}
+      {/*     value={currentProfile?.apiKey ?? ""} */}
+      {/*     onChange={val => handleProfileFieldChange('apiKey', val)} */}
+      {/*     type='password' />} */}
       {isProfileIdValid &&
-        <TextProperty id='profile-service-api-key-input' label='API key'
-          value={currentProfile?.apiKey ?? ""}
-          onChange={val => handleProfileFieldChange('apiKey', val)}
-          type='password' />}
+        <ApiKeyInput currentProfile={currentProfile} />}
       {isProfileIdValid &&
         <SwitchProperty id='profile-proxy-switch' label='Use proxy for this profile'
           checked={currentProfile?.isProxyEnabled ?? false}
@@ -133,6 +135,7 @@ export default ({ settings, changeSettingsProperty }: SettingsGroupProps) => {
         <SliderProperty label='Temperature' value={currentProfile?.temperature ?? ModelProfileSchema.shape.temperature.parse(undefined)}
           min={0} max={2} step={0.1} onChange={value => handleProfileFieldChange("temperature", value)}
           hint='Temperature controls how literal or flexible the AI’s translations are: 0.0 – 0.2 Strict; 0.3 – 0.5 Natural; 0.7+ Creative' />}
+
     </GroupWrapper>
   )
 }
